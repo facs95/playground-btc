@@ -10,6 +10,7 @@ import {
     withStyles,
     Grid,
     IconButton,
+    Hidden,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
@@ -60,13 +61,15 @@ export const NavBar = () => {
                                 <img src="/logo.png" className={classes.logo} />
                             </IconButton>
                         </Grid>
-                        <Grid item>
-                            <Box className={classes.separator}>
-                                <Typography variant="h6" align="right">
-                                    {`1 BTC = USD $${btcPrice}`}
-                                </Typography>
-                            </Box>
-                        </Grid>
+                        <Hidden smDown>
+                            <Grid item>
+                                <Box className={classes.separator}>
+                                    <Typography variant="h6" align="right">
+                                        {`1 BTC = USD $${btcPrice}`}
+                                    </Typography>
+                                </Box>
+                            </Grid>
+                        </Hidden>
                         <Grid item>
                             <CustomTabs
                                 className="AppComponent-tabs"
