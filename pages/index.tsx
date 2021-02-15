@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { HDAddress } from "./api/generateHdAddress";
+import { GenerateHdAddressVars, HDAddress } from "./api/generateHdAddress";
 import { Mnemonic } from "./api/generateMnemonic";
 import {
     Box,
@@ -7,19 +7,27 @@ import {
     Grid,
     makeStyles,
     Paper,
+    Radio,
+    Switch,
     TextField,
     Typography,
 } from "@material-ui/core";
 import { ResultAddress } from "../components/ResultAddress";
 import { ErrorMessage } from "../components/ErrorMessage";
+import { BorderOuterTwoTone } from "@material-ui/icons";
+import { Seed } from "./api/generateSeed";
 
 export default function Index() {
     const [phrase, setPhrase] = useState("");
     const [path, setPath] = useState("m/1");
+    const [seed, setSeed] = useState("");
     const [address, setAddress] = useState("");
     const [generated, setGenerated] = useState(false);
     const [message, setMessage] = useState("");
     const [openErrorMessage, setOpenErrorMessage] = useState(false);
+    const [inputOption, setInputOption] = useState<"mnemonic" | "seed">(
+        "mnemonic"
+    );
 
     const classes = useStyles();
 
@@ -29,20 +37,30 @@ export default function Index() {
     );
 
     const disabledAction =
-        !isPhraseValid || !phrase || !/^m(\/\d+'?)*$/.test(path);
+        (inputOption === "mnemonic" && (!isPhraseValid || !phrase)) ||
+        (inputOption === "seed" && !seed) ||
+        !/^m(\/\d+'?)*$/.test(path);
 
     useEffect(() => {
         setGenerated(false);
-    }, [path, phrase]);
+    }, [path, phrase, inputOption]);
 
     const onSubmit = async () => {
         try {
+            const body: GenerateHdAddressVars = {
+                path,
+            };
+
+            //Body params will change dependand on choosen input
+            if (inputOption === "mnemonic") {
+                body.mnemonic = phrase;
+            } else {
+                body.seed = seed;
+            }
+
             const response = await fetch("/api/generateHdAddress", {
                 method: "POST",
-                body: JSON.stringify({
-                    mnemonic: phrase,
-                    path,
-                }),
+                body: JSON.stringify(body),
             });
             if (!response.ok) {
                 throw new Error(
@@ -57,7 +75,7 @@ export default function Index() {
         }
     };
 
-    const generateRandom = async () => {
+    const generateRandomMnemonic = async () => {
         try {
             const response = await fetch("/api/generateMnemonic");
             if (!response.ok) {
@@ -67,6 +85,21 @@ export default function Index() {
             }
             const data = (await response.json()) as Mnemonic;
             setPhrase(data.mnemonic);
+        } catch (err) {
+            setMessage(err.message || err);
+        }
+    };
+
+    const generateRandomSeed = async () => {
+        try {
+            const response = await fetch("/api/generateSeed");
+            if (!response.ok) {
+                throw new Error(
+                    "Sorry something went wrong, please try again!"
+                );
+            }
+            const data = (await response.json()) as Seed;
+            setSeed(data.seed);
         } catch (err) {
             setMessage(err.message || err);
         }
@@ -93,15 +126,27 @@ export default function Index() {
                                     HD Segregated Witness Address
                                 </Typography>
                             </Grid>
+
                             <Grid item container spacing={3}>
                                 <Grid
                                     item
                                     container
                                     alignItems="center"
                                     spacing={2}
+                                    wrap="nowrap"
                                 >
+                                    <Grid item>
+                                        <Radio
+                                            checked={inputOption === "mnemonic"}
+                                            color="primary"
+                                            onClick={() =>
+                                                setInputOption("mnemonic")
+                                            }
+                                        />
+                                    </Grid>
                                     <Grid item className={classes.input}>
                                         <TextField
+                                            disabled={inputOption === "seed"}
                                             size="small"
                                             variant="outlined"
                                             fullWidth
@@ -117,7 +162,48 @@ export default function Index() {
                                         <Button
                                             variant="outlined"
                                             color="primary"
-                                            onClick={generateRandom}
+                                            onClick={generateRandomMnemonic}
+                                        >
+                                            Random
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    item
+                                    container
+                                    alignItems="center"
+                                    spacing={2}
+                                    wrap="nowrap"
+                                >
+                                    <Grid item>
+                                        <Radio
+                                            checked={inputOption === "seed"}
+                                            color="primary"
+                                            onClick={() =>
+                                                setInputOption("seed")
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item className={classes.input}>
+                                        <TextField
+                                            disabled={
+                                                inputOption === "mnemonic"
+                                            }
+                                            size="small"
+                                            variant="outlined"
+                                            fullWidth
+                                            value={seed}
+                                            label="Seed"
+                                            onChange={(e) =>
+                                                setSeed(e.target.value)
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item>
+                                        <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            onClick={generateRandomSeed}
                                         >
                                             Random
                                         </Button>

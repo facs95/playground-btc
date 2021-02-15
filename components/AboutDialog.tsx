@@ -5,8 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 interface Props {
     open: boolean;
@@ -14,7 +13,6 @@ interface Props {
 }
 
 export default function AboutDialog({ open, setOpen }: Props) {
-    const classes = useStyles();
 
     const handleClose = () => {
         setOpen(false);
@@ -54,9 +52,3 @@ export default function AboutDialog({ open, setOpen }: Props) {
         </Dialog>
     );
 }
-
-const useStyles = makeStyles(() => ({
-    container: {
-        width: 400,
-    },
-}));

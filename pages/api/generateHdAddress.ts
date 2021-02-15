@@ -6,10 +6,21 @@ export interface HDAddress {
     publicAddress: string;
 }
 
+export interface GenerateHdAddressVars {
+    mnemonic?: string
+    seed?: string
+    path: string
+}
+
 export default async (req, res) => {
-    const { mnemonic, path } = JSON.parse(req.body);
-    const seed = await bip39.mnemonicToSeed(mnemonic);
-    const root = hdkey.fromMasterSeed(seed);
+    const { mnemonic, path, seed  } = JSON.parse(req.body) as GenerateHdAddressVars;
+    let masterSeed: Buffer | null = null;
+    if (mnemonic) {
+        masterSeed = await bip39.mnemonicToSeed(mnemonic);
+    } else {
+        masterSeed = Buffer.from(seed, 'hex');
+    }
+    const root = hdkey.fromMasterSeed(masterSeed);
     const addNode = root.derive(path);
     const hex = addNode.publicKey.toString("hex");
     const { address } = bitcoin.payments.p2wpkh({
