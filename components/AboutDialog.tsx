@@ -29,9 +29,9 @@ export default function AboutDialog({ open, setOpen }: Props) {
         >
             <DialogTitle>Demo for Crypto.com</DialogTitle>
 
-            <DialogContent className={classes.container}>
+            <DialogContent>
                 <DialogContentText>
-                    <Box display="flex" justifyContent="center">
+                    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                         <Box style={{ width: 210, overflow: "hidden" }}>
                             <img
                                 alt=""
@@ -39,10 +39,10 @@ export default function AboutDialog({ open, setOpen }: Props) {
                                 src="https://media-exp1.licdn.com/dms/image/C4E03AQF0qtpPysG4Hw/profile-displayphoto-shrink_800_800/0/1553308216868?e=1619049600&v=beta&t=lLp25bb8rnMyKOCTru32NMPVJL2gQBircZW7sfJqIOs"
                             />
                         </Box>
+                        <Typography align="center" variant="h6">
+                            Freddy Caceres
+                        </Typography>
                     </Box>
-                    <Typography align="center" variant="h6">
-                        Freddy Caceres
-                    </Typography>
                 </DialogContentText>
             </DialogContent>
 
