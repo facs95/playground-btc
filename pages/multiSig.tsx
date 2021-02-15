@@ -67,113 +67,109 @@ export default function Index() {
 
     return (
         <>
-            <Box className={classes.container}>
-                <PaperWrapper>
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            onSubmit();
-                        }}
-                    >
-                        <Grid container direction="column" spacing={4}>
-                            <Grid item>
-                                <Typography align="center" variant="h6">
-                                    Multisignature P2SH Address
-                                </Typography>
-                            </Grid>
-                            <Grid item container wrap="nowrap" spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        value={numberOfKeys}
-                                        onChange={(e) => {
-                                            let newNum = Number(e.target.value);
-                                            if (newNum < numberOfSigns + 1) {
-                                                setNumberOfSigns(1);
-                                            }
-                                            setNumberOfKeys(newNum);
-                                        }}
-                                        label="Number of keys"
-                                        size="small"
-                                        fullWidth
-                                        variant="outlined"
-                                        select
-                                    >
-                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
-                                            (item, index) => (
-                                                <MenuItem
-                                                    key={`key-${index}`}
-                                                    value={item}
-                                                >
-                                                    {item}
-                                                </MenuItem>
-                                            )
-                                        )}
-                                    </TextField>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        value={numberOfSigns}
-                                        onChange={(e) =>
-                                            setNumberOfSigns(
-                                                Number(e.target.value)
-                                            )
+            <PaperWrapper>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        onSubmit();
+                    }}
+                >
+                    <Grid container direction="column" spacing={4}>
+                        <Grid item>
+                            <Typography align="center" variant="h6">
+                                Multisignature P2SH Address
+                            </Typography>
+                        </Grid>
+                        <Grid item container wrap="nowrap" spacing={2}>
+                            <Grid item xs={6}>
+                                <TextField
+                                    value={numberOfKeys}
+                                    onChange={(e) => {
+                                        let newNum = Number(e.target.value);
+                                        if (newNum < numberOfSigns + 1) {
+                                            setNumberOfSigns(1);
                                         }
-                                        label={
-                                            isSmall
-                                                ? "Requried Signatures"
-                                                : "Signatures"
-                                        }
-                                        size="small"
-                                        fullWidth
-                                        variant="outlined"
-                                        select
-                                    >
-                                        {signatureAmountOptions.map(
-                                            (item, index) => (
-                                                <MenuItem
-                                                    key={`signatures-${index}`}
-                                                    value={item + 1}
-                                                >
-                                                    {item + 1}
-                                                </MenuItem>
-                                            )
-                                        )}
-                                    </TextField>
-                                </Grid>
-                            </Grid>
-                            <Grid item container direction="column" spacing={1}>
-                                <Grid item>
-                                    <Typography variant="h6">
-                                        Public Keys
-                                    </Typography>
-                                </Grid>
-                                {signatureAmountOptions.map((_, index) => (
-                                    <Grid key={`publicKey-${index}`} item>
-                                        <KeyPair
-                                            {...{ index }}
-                                            {...{ setPubKeys }}
-                                        />
-                                    </Grid>
-                                ))}
-                            </Grid>
-                            <Grid item className={classes.centerItem}>
-                                <Button
-                                    type="submit"
-                                    size="large"
-                                    variant="contained"
-                                    color="primary"
-                                    disabled={generated}
+                                        setNumberOfKeys(newNum);
+                                    }}
+                                    label="Number of keys"
+                                    size="small"
+                                    fullWidth
+                                    variant="outlined"
+                                    select
                                 >
-                                    Generate
-                                </Button>
+                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+                                        (item, index) => (
+                                            <MenuItem
+                                                key={`key-${index}`}
+                                                value={item}
+                                            >
+                                                {item}
+                                            </MenuItem>
+                                        )
+                                    )}
+                                </TextField>
                             </Grid>
-                            <Grid item xs={12}>
-                                <ResultAddress {...{ address }} />
+                            <Grid item xs={6}>
+                                <TextField
+                                    value={numberOfSigns}
+                                    onChange={(e) =>
+                                        setNumberOfSigns(Number(e.target.value))
+                                    }
+                                    label={
+                                        isSmall
+                                            ? "Requried Signatures"
+                                            : "Signatures"
+                                    }
+                                    size="small"
+                                    fullWidth
+                                    variant="outlined"
+                                    select
+                                >
+                                    {signatureAmountOptions.map(
+                                        (item, index) => (
+                                            <MenuItem
+                                                key={`signatures-${index}`}
+                                                value={item + 1}
+                                            >
+                                                {item + 1}
+                                            </MenuItem>
+                                        )
+                                    )}
+                                </TextField>
                             </Grid>
                         </Grid>
-                    </form>
-                </PaperWrapper>
-            </Box>
+                        <Grid item container direction="column" spacing={1}>
+                            <Grid item>
+                                <Typography variant="h6">
+                                    Public Keys
+                                </Typography>
+                            </Grid>
+                            {signatureAmountOptions.map((_, index) => (
+                                <Grid key={`publicKey-${index}`} item>
+                                    <KeyPair
+                                        {...{ index }}
+                                        {...{ setPubKeys }}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Grid item className={classes.centerItem}>
+                            <Button
+                                type="submit"
+                                size="large"
+                                variant="contained"
+                                color="primary"
+                                disabled={generated}
+                            >
+                                Generate
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ResultAddress {...{ address }} />
+                        </Grid>
+                    </Grid>
+                </form>
+            </PaperWrapper>
             <ErrorMessage
                 open={openErrorMessage}
                 setOpen={setOpenErrorMessage}
@@ -184,13 +180,6 @@ export default function Index() {
 }
 
 const useStyles = makeStyles(() => ({
-    container: {
-        marginTop: 100,
-        display: "flex",
-        justifyItems: "center",
-        alignItems: "center",
-        height: "calc(100vh - 200px)",
-    },
     input: {
         flexGrow: 1,
     },

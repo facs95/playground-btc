@@ -1,5 +1,11 @@
 import classes from "*.module.css";
-import { makeStyles, Paper, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+    Box,
+    makeStyles,
+    Paper,
+    useMediaQuery,
+    useTheme,
+} from "@material-ui/core";
 import React from "react";
 
 interface Props {
@@ -11,14 +17,26 @@ export const PaperWrapper = ({ children }: Props) => {
     const isSmall = useMediaQuery(() => theme.breakpoints.up("sm"));
 
     return (
-        <Paper elevation={isSmall ? 6 : 0} className={classes.container}>
-            {children}
-        </Paper>
+        <Box className={classes.container}>
+            <Paper
+                elevation={isSmall ? 6 : 0}
+                className={classes.paperContainer}
+            >
+                {children}
+            </Paper>
+        </Box>
     );
 };
 
 const useStyles = makeStyles(() => ({
     container: {
+        marginTop: 100,
+        display: "flex",
+        justifyItems: "center",
+        alignItems: "center",
+        height: "calc(100vh - 200px)",
+    },
+    paperContainer: {
         margin: "auto",
         minWidth: "70vw",
         minHeight: 500,

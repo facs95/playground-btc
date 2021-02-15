@@ -108,144 +108,134 @@ export default function Index() {
 
     return (
         <>
-            <Box className={classes.container}>
-                <PaperWrapper>
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            onSubmit();
-                        }}
-                    >
-                        <Grid container direction="column" spacing={4}>
-                            <Grid item>
-                                <Typography align="center" variant="h6">
-                                    HD Segregated Witness Address
-                                </Typography>
-                            </Grid>
+            <PaperWrapper>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        onSubmit();
+                    }}
+                >
+                    <Grid container direction="column" spacing={4}>
+                        <Grid item>
+                            <Typography align="center" variant="h6">
+                                HD Segregated Witness Address
+                            </Typography>
+                        </Grid>
 
-                            <Grid item container spacing={3}>
-                                <Grid
-                                    item
-                                    container
-                                    alignItems="center"
-                                    spacing={2}
-                                    wrap="nowrap"
-                                >
-                                    <Grid item>
-                                        <Radio
-                                            checked={inputOption === "mnemonic"}
-                                            color="primary"
-                                            onClick={() =>
-                                                setInputOption("mnemonic")
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item className={classes.input}>
-                                        <TextField
-                                            disabled={inputOption === "seed"}
-                                            size="small"
-                                            variant="outlined"
-                                            fullWidth
-                                            error={
-                                                inputOption === "mnemonic" &&
-                                                !isPhraseValid
-                                            }
-                                            autoComplete="off"
-                                            value={phrase}
-                                            label="Mnemonic Phrase"
-                                            onChange={(e) =>
-                                                setPhrase(e.target.value)
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item>
-                                        <Button
-                                            disabled={inputOption === "seed"}
-                                            variant="outlined"
-                                            color="primary"
-                                            onClick={generateRandomMnemonic}
-                                        >
-                                            Random
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-                                <Grid
-                                    item
-                                    container
-                                    alignItems="center"
-                                    spacing={2}
-                                    wrap="nowrap"
-                                >
-                                    <Grid item>
-                                        <Radio
-                                            checked={inputOption === "seed"}
-                                            color="primary"
-                                            onClick={() =>
-                                                setInputOption("seed")
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item className={classes.input}>
-                                        <TextField
-                                            disabled={
-                                                inputOption === "mnemonic"
-                                            }
-                                            size="small"
-                                            variant="outlined"
-                                            fullWidth
-                                            value={seed}
-                                            label="Seed"
-                                            onChange={(e) =>
-                                                setSeed(e.target.value)
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item>
-                                        <Button
-                                            disabled={
-                                                inputOption === "mnemonic"
-                                            }
-                                            variant="outlined"
-                                            color="primary"
-                                            onClick={generateRandomSeed}
-                                        >
-                                            Random
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <TextField
-                                        size="small"
-                                        variant="outlined"
-                                        fullWidth
-                                        value={path}
-                                        label="Path"
-                                        error={!isPathValid}
-                                        onChange={(e) =>
-                                            setPath(e.target.value)
+                        <Grid item container spacing={3}>
+                            <Grid
+                                item
+                                container
+                                alignItems="center"
+                                spacing={2}
+                                wrap="nowrap"
+                            >
+                                <Grid item>
+                                    <Radio
+                                        checked={inputOption === "mnemonic"}
+                                        color="primary"
+                                        onClick={() =>
+                                            setInputOption("mnemonic")
                                         }
                                     />
                                 </Grid>
+                                <Grid item className={classes.input}>
+                                    <TextField
+                                        disabled={inputOption === "seed"}
+                                        size="small"
+                                        variant="outlined"
+                                        fullWidth
+                                        error={
+                                            inputOption === "mnemonic" &&
+                                            !isPhraseValid
+                                        }
+                                        autoComplete="off"
+                                        value={phrase}
+                                        label="Mnemonic Phrase"
+                                        onChange={(e) =>
+                                            setPhrase(e.target.value)
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        disabled={inputOption === "seed"}
+                                        variant="outlined"
+                                        color="primary"
+                                        onClick={generateRandomMnemonic}
+                                    >
+                                        Random
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item className={classes.centerItem}>
-                                <Button
-                                    type="submit"
-                                    size="large"
-                                    variant="contained"
-                                    color="primary"
-                                    disabled={disabledAction || generated}
-                                >
-                                    Generate
-                                </Button>
+                            <Grid
+                                item
+                                container
+                                alignItems="center"
+                                spacing={2}
+                                wrap="nowrap"
+                            >
+                                <Grid item>
+                                    <Radio
+                                        checked={inputOption === "seed"}
+                                        color="primary"
+                                        onClick={() => setInputOption("seed")}
+                                    />
+                                </Grid>
+                                <Grid item className={classes.input}>
+                                    <TextField
+                                        disabled={inputOption === "mnemonic"}
+                                        size="small"
+                                        variant="outlined"
+                                        fullWidth
+                                        value={seed}
+                                        label="Seed"
+                                        onChange={(e) =>
+                                            setSeed(e.target.value)
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        disabled={inputOption === "mnemonic"}
+                                        variant="outlined"
+                                        color="primary"
+                                        onClick={generateRandomSeed}
+                                    >
+                                        Random
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <ResultAddress {...{ address }} />
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    size="small"
+                                    variant="outlined"
+                                    fullWidth
+                                    value={path}
+                                    label="Path"
+                                    error={!isPathValid}
+                                    onChange={(e) => setPath(e.target.value)}
+                                />
                             </Grid>
                         </Grid>
-                    </form>
-                </PaperWrapper>
-            </Box>
+                        <Grid item className={classes.centerItem}>
+                            <Button
+                                type="submit"
+                                size="large"
+                                variant="contained"
+                                color="primary"
+                                disabled={disabledAction || generated}
+                            >
+                                Generate
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <ResultAddress {...{ address }} />
+                        </Grid>
+                    </Grid>
+                </form>
+            </PaperWrapper>
             <ErrorMessage
                 open={openErrorMessage}
                 setOpen={setOpenErrorMessage}
@@ -256,19 +246,6 @@ export default function Index() {
 }
 
 const useStyles = makeStyles(() => ({
-    container: {
-        marginTop: 100,
-        display: "flex",
-        justifyItems: "center",
-        alignItems: "center",
-        height: "calc(100vh - 200px)",
-    },
-    paper: {
-        margin: "auto",
-        minWidth: "70vw",
-        minHeight: 500,
-        padding: 40,
-    },
     input: {
         flexGrow: 1,
     },
