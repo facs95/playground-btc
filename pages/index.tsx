@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { ResultAddress } from "../components/ResultAddress";
 
 export default function Index() {
     const [phrase, setPhrase] = useState("");
@@ -143,38 +144,8 @@ export default function Index() {
                                 Generate
                             </Button>
                         </Grid>
-                        <Grid item container alignItems="center" spacing={2}>
-                            <Fade in={!!address}>
-                                <Grid item className={classes.input}>
-                                    <TextField
-                                        size="small"
-                                        variant="outlined"
-                                        fullWidth
-                                        InputProps={{
-                                            readOnly: true,
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <CopyToClipboard
-                                                        text={address}
-                                                    >
-                                                        <Tooltip
-                                                            title={
-                                                                "Copy to clipboard"
-                                                            }
-                                                            arrow
-                                                        >
-                                                            <IconButton size="small">
-                                                                <FileCopyIcon />
-                                                            </IconButton>
-                                                        </Tooltip>
-                                                    </CopyToClipboard>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                        value={address}
-                                    />
-                                </Grid>
-                            </Fade>
+                        <Grid item>
+                            <ResultAddress {...{ address }} />
                         </Grid>
                     </Grid>
                 </form>

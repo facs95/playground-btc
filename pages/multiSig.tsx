@@ -9,6 +9,7 @@ import {
     IconButton,
     InputAdornment,
     makeStyles,
+    MenuItem,
     Paper,
     TextField,
     Tooltip,
@@ -16,35 +17,35 @@ import {
 } from "@material-ui/core";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { KeyPair } from "../components/KeyPair";
+import { ResultAddress } from "../components/ResultAddress";
+import { MultiSigAddress } from "./api/generateMultisigAddress";
 
 export default function Index() {
-    const [phrase, setPhrase] = useState("");
-    const [path, setPath] = useState("m/1");
     const [address, setAddress] = useState("");
     const [generated, setGenerated] = useState(false);
     const [message, setMessage] = useState("");
+    const [numberOfKeys, setNumberOfKeys] = useState(1);
+    const [numberOfSigns, setNumberOfSigns] = useState(1);
+    const [pubKeys, setPubKeys] = useState<string[]>([]);
 
     const classes = useStyles();
 
-    const isPhraseValid = useMemo(
-        () => phrase.length === 0 || phrase.trim().split(/\s+/g).length >= 12,
-        [phrase]
-    );
-
-    const disabledAction =
-        !isPhraseValid || !phrase || !/^m(\/\d+'?)*$/.test(path);
-
     useEffect(() => {
         setGenerated(false);
-    }, [path, phrase]);
+    }, [numberOfKeys, numberOfSigns, pubKeys]);
+
+    const signatureAmountOptions = useMemo(() => {
+        return Array.from(Array(numberOfKeys).keys());
+    }, [numberOfKeys]);
 
     const onSubmit = async () => {
         try {
-            const response = await fetch("/api/generateHdAddress", {
+            const response = await fetch("/api/generateMultisigAddress", {
                 method: "POST",
                 body: JSON.stringify({
-                    mnemonic: phrase,
-                    path,
+                    pubKeys: [...pubKeys].splice(0, numberOfKeys),
+                    m: numberOfSigns,
                 }),
             });
             if (!response.ok) {
@@ -52,29 +53,16 @@ export default function Index() {
                     "Sorry something went wrong, please try again!"
                 );
             }
-            const data = (await response.json()) as HDAddress;
+            const data = (await response.json()) as MultiSigAddress;
             setGenerated(true);
-            setAddress(data.publicAddress);
+            setAddress(data.address);
         } catch (err) {
+            setAddress('');
             setMessage(err.message || err);
         }
     };
 
-    const generateRandom = async () => {
-        try {
-            const response = await fetch("/api/generateMnemonic");
-            if (!response.ok) {
-                throw new Error(
-                    "Sorry something went wrong, please try again!"
-                );
-            }
-            const data = (await response.json()) as Mnemonic;
-            setPhrase(data.mnemonic);
-        } catch (err) {
-            setMessage(err.message || err);
-        }
-    };
-
+    console.log(pubKeys);
     return (
         <Box className={classes.container}>
             <Paper elevation={6} className={classes.paper}>
@@ -84,7 +72,96 @@ export default function Index() {
                         onSubmit();
                     }}
                 >
-                   
+                    <Grid container direction="column" spacing={4}>
+                        <Grid item>
+                            <Typography align="center" variant="h6">
+                                Multisignature P2SH bitcoin address
+                            </Typography>
+                        </Grid>
+                        <Grid item container wrap="nowrap" spacing={2}>
+                            <Grid item xs={6}>
+                                <TextField
+                                    value={numberOfKeys}
+                                    onChange={(e) => {
+                                        let newNum = Number(e.target.value);
+                                        if (newNum < numberOfSigns + 1) {
+                                            setNumberOfSigns(1);
+                                        }
+                                        setNumberOfKeys(newNum);
+                                    }}
+                                    label="Number of keys"
+                                    size="small"
+                                    fullWidth
+                                    variant="outlined"
+                                    select
+                                >
+                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
+                                        (item, index) => (
+                                            <MenuItem
+                                                key={`key-${index}`}
+                                                value={item}
+                                            >
+                                                {item}
+                                            </MenuItem>
+                                        )
+                                    )}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    value={numberOfSigns}
+                                    onChange={(e) =>
+                                        setNumberOfSigns(Number(e.target.value))
+                                    }
+                                    label="Required Signatures"
+                                    size="small"
+                                    fullWidth
+                                    variant="outlined"
+                                    select
+                                >
+                                    {signatureAmountOptions.map(
+                                        (item, index) => (
+                                            <MenuItem
+                                                key={`signatures-${index}`}
+                                                value={item + 1}
+                                            >
+                                                {item + 1}
+                                            </MenuItem>
+                                        )
+                                    )}
+                                </TextField>
+                            </Grid>
+                        </Grid>
+                        <Grid item container direction="column" spacing={1}>
+                            <Grid item>
+                                <Typography variant="h6">
+                                    Public Keys
+                                </Typography>
+                            </Grid>
+                            {signatureAmountOptions.map((_, index) => (
+                                <Grid key={`publicKey-${index}`} item>
+                                    <KeyPair
+                                        {...{ index }}
+                                        {...{ setPubKeys }}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Grid item className={classes.centerItem}>
+                            <Button
+                                type="submit"
+                                size="large"
+                                variant="contained"
+                                color="primary"
+                                disabled={generated}
+                            >
+                                Generate
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ResultAddress {...{ address }} />
+                        </Grid>
+                    </Grid>
                 </form>
             </Paper>
         </Box>
@@ -109,9 +186,6 @@ const useStyles = makeStyles(() => ({
         flexGrow: 1,
     },
     centerItem: {
-        alignSelf: "center",
-    },
-    icon: {
         alignSelf: "center",
     },
 }));
