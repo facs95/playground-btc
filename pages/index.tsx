@@ -105,11 +105,6 @@ export default function Index() {
 
     return (
         <>
-            <ErrorMessage
-                open={openErrorMessage}
-                setOpen={setOpenErrorMessage}
-                {...{ message }}
-            />
             <Box className={classes.container}>
                 <Paper elevation={6} className={classes.paper}>
                     <form
@@ -239,6 +234,11 @@ export default function Index() {
                     </form>
                 </Paper>
             </Box>
+            <ErrorMessage
+                open={openErrorMessage}
+                setOpen={setOpenErrorMessage}
+                {...{ message }}
+            />
         </>
     );
 }
@@ -261,9 +261,6 @@ const useStyles = makeStyles(() => ({
         flexGrow: 1,
     },
     centerItem: {
-        alignSelf: "center",
-    },
-    icon: {
         alignSelf: "center",
     },
 }));

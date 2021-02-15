@@ -11,7 +11,10 @@ import {
 } from "@material-ui/core";
 import { KeyPair } from "../components/KeyPair";
 import { ResultAddress } from "../components/ResultAddress";
-import { MultiSigAddress } from "./api/generateMultisigAddress";
+import {
+    GenerateMultiSigAddressVars,
+    MultiSigAddress,
+} from "./api/generateMultisigAddress";
 import { ErrorMessage } from "../components/ErrorMessage";
 
 export default function Index() {
@@ -35,17 +38,16 @@ export default function Index() {
 
     const onSubmit = async () => {
         try {
+            const body: GenerateMultiSigAddressVars = {
+                pubKeys: [...pubKeys].splice(0, numberOfKeys),
+                m: numberOfSigns,
+            };
             const response = await fetch("/api/generateMultisigAddress", {
                 method: "POST",
-                body: JSON.stringify({
-                    pubKeys: [...pubKeys].splice(0, numberOfKeys),
-                    m: numberOfSigns,
-                }),
+                body: JSON.stringify(body),
             });
             if (!response.ok) {
-                throw new Error(
-                    "Could not generate, please check addresses"
-                );
+                throw new Error("Could not generate, please check addresses");
             }
             const data = (await response.json()) as MultiSigAddress;
             setGenerated(true);
@@ -59,11 +61,6 @@ export default function Index() {
 
     return (
         <>
-            <ErrorMessage
-                open={openErrorMessage}
-                setOpen={setOpenErrorMessage}
-                {...{ message }}
-            />
             <Box className={classes.container}>
                 <Paper elevation={6} className={classes.paper}>
                     <form
@@ -167,6 +164,11 @@ export default function Index() {
                     </form>
                 </Paper>
             </Box>
+            <ErrorMessage
+                open={openErrorMessage}
+                setOpen={setOpenErrorMessage}
+                {...{ message }}
+            />
         </>
     );
 }
