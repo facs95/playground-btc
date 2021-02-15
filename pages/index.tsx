@@ -88,7 +88,7 @@ export default function Index() {
                     <Grid container direction="column" spacing={4}>
                         <Grid item>
                             <Typography align="center" variant="h6">
-                                HD Segwit Address
+                                HD Segregated Witness Address
                             </Typography>
                         </Grid>
                         <Grid item container spacing={3}>

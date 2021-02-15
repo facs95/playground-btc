@@ -1,22 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { HDAddress } from "./api/generateHdAddress";
-import { Mnemonic } from "./api/generateMnemonic";
 import {
     Box,
     Button,
-    Fade,
     Grid,
-    IconButton,
-    InputAdornment,
     makeStyles,
     MenuItem,
     Paper,
     TextField,
-    Tooltip,
     Typography,
 } from "@material-ui/core";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import { KeyPair } from "../components/KeyPair";
 import { ResultAddress } from "../components/ResultAddress";
 import { MultiSigAddress } from "./api/generateMultisigAddress";
@@ -57,12 +49,11 @@ export default function Index() {
             setGenerated(true);
             setAddress(data.address);
         } catch (err) {
-            setAddress('');
+            setAddress("");
             setMessage(err.message || err);
         }
     };
 
-    console.log(pubKeys);
     return (
         <Box className={classes.container}>
             <Paper elevation={6} className={classes.paper}>
@@ -75,7 +66,7 @@ export default function Index() {
                     <Grid container direction="column" spacing={4}>
                         <Grid item>
                             <Typography align="center" variant="h6">
-                                Multisignature P2SH bitcoin address
+                                Multisignature P2SH Address
                             </Typography>
                         </Grid>
                         <Grid item container wrap="nowrap" spacing={2}>

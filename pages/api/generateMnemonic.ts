@@ -6,8 +6,6 @@ export interface Mnemonic {
 }
 
 export default async (_, res) => {
-    var bip39 = require('bip39')
     const mnemonic = bip39.generateMnemonic()    
-
     res.status(200).json({ mnemonic } as Mnemonic);
 };

@@ -4,7 +4,7 @@ import hdkey from "hdkey";
 import * as bitcoin from "bitcoinjs-lib";
 
 export interface HDAddress {
-    publicAddress: string
+    publicAddress: string;
 }
 
 export default async (req, res) => {
@@ -13,10 +13,6 @@ export default async (req, res) => {
     const root = hdkey.fromMasterSeed(seed);
     const addNode = root.derive(path);
     const hex = addNode.publicKey.toString("hex");
-    // const {address} = bitcoin.payments.p2sh({
-    //   redeem: bitcoin.payments.p2wpkh({pubkey:Buffer.from(hex, 'hex')})
-    // });
-
     const { address } = bitcoin.payments.p2wpkh({
         pubkey: Buffer.from(hex, "hex"),
     });

@@ -6,7 +6,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-import { Box, Typography } from "@material-ui/core";
+import { Box, makeStyles, Typography } from "@material-ui/core";
+import classes from "*.module.css";
 
 interface Props {
     open: boolean;
@@ -14,9 +15,7 @@ interface Props {
 }
 
 export default function AboutDialog({ open, setOpen }: Props) {
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    const classes = useStyles();
 
     const handleClose = () => {
         setOpen(false);
@@ -29,9 +28,9 @@ export default function AboutDialog({ open, setOpen }: Props) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle>About</DialogTitle>
+            <DialogTitle>Demo for Crypto.com</DialogTitle>
 
-            <DialogContent>
+            <DialogContent className={classes.container}>
                 <DialogContentText>
                     <Box display="flex" justifyContent="center">
                         <Box style={{ width: 210, overflow: "hidden" }}>
@@ -42,12 +41,9 @@ export default function AboutDialog({ open, setOpen }: Props) {
                             />
                         </Box>
                     </Box>
-
-                    <Typography variant="h6">
-                        Demo application for crypto.com
+                    <Typography align="center" variant="h6">
+                        Freddy Caceres
                     </Typography>
-
-                    <Typography variant="h6">Freddy Caceres 2021</Typography>
                 </DialogContentText>
             </DialogContent>
 
@@ -59,3 +55,9 @@ export default function AboutDialog({ open, setOpen }: Props) {
         </Dialog>
     );
 }
+
+const useStyles = makeStyles(() => ({
+    container: {
+        width: 400,
+    },
+}));
