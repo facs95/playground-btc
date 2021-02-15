@@ -34,10 +34,12 @@ export default function Index() {
         [phrase]
     );
 
+    const isPathValid = useMemo(() => /^m(\/\d+'?)*$/.test(path), [path]);
+
     const disabledAction =
         (inputOption === "mnemonic" && (!isPhraseValid || !phrase)) ||
         (inputOption === "seed" && !seed) ||
-        !/^m(\/\d+'?)*$/.test(path);
+        !isPathValid;
 
     useEffect(() => {
         setGenerated(false);
@@ -143,6 +145,10 @@ export default function Index() {
                                             size="small"
                                             variant="outlined"
                                             fullWidth
+                                            error={
+                                                inputOption === "mnemonic" &&
+                                                !isPhraseValid
+                                            }
                                             autoComplete="off"
                                             value={phrase}
                                             label="Mnemonic Phrase"
@@ -210,6 +216,7 @@ export default function Index() {
                                         fullWidth
                                         value={path}
                                         label="Path"
+                                        error={!isPathValid}
                                         onChange={(e) =>
                                             setPath(e.target.value)
                                         }
