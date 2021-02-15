@@ -7,7 +7,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { Box, makeStyles, Typography } from "@material-ui/core";
-import classes from "*.module.css";
 
 interface Props {
     open: boolean;

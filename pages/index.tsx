@@ -4,19 +4,14 @@ import { Mnemonic } from "./api/generateMnemonic";
 import {
     Box,
     Button,
-    Fade,
     Grid,
-    IconButton,
-    InputAdornment,
     makeStyles,
     Paper,
     TextField,
-    Tooltip,
     Typography,
 } from "@material-ui/core";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ResultAddress } from "../components/ResultAddress";
+import { ErrorMessage } from "../components/ErrorMessage";
 
 export default function Index() {
     const [phrase, setPhrase] = useState("");
@@ -24,6 +19,7 @@ export default function Index() {
     const [address, setAddress] = useState("");
     const [generated, setGenerated] = useState(false);
     const [message, setMessage] = useState("");
+    const [openErrorMessage, setOpenErrorMessage] = useState(false);
 
     const classes = useStyles();
 
@@ -77,80 +73,89 @@ export default function Index() {
     };
 
     return (
-        <Box className={classes.container}>
-            <Paper elevation={6} className={classes.paper}>
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        onSubmit();
-                    }}
-                >
-                    <Grid container direction="column" spacing={4}>
-                        <Grid item>
-                            <Typography align="center" variant="h6">
-                                HD Segregated Witness Address
-                            </Typography>
-                        </Grid>
-                        <Grid item container spacing={3}>
-                            <Grid
-                                item
-                                container
-                                alignItems="center"
-                                spacing={2}
-                            >
-                                <Grid item className={classes.input}>
+        <>
+            <ErrorMessage
+                open={openErrorMessage}
+                setOpen={setOpenErrorMessage}
+                {...{ message }}
+            />
+            <Box className={classes.container}>
+                <Paper elevation={6} className={classes.paper}>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            onSubmit();
+                        }}
+                    >
+                        <Grid container direction="column" spacing={4}>
+                            <Grid item>
+                                <Typography align="center" variant="h6">
+                                    HD Segregated Witness Address
+                                </Typography>
+                            </Grid>
+                            <Grid item container spacing={3}>
+                                <Grid
+                                    item
+                                    container
+                                    alignItems="center"
+                                    spacing={2}
+                                >
+                                    <Grid item className={classes.input}>
+                                        <TextField
+                                            size="small"
+                                            variant="outlined"
+                                            fullWidth
+                                            autoComplete="off"
+                                            value={phrase}
+                                            label="Mnemonic Phrase"
+                                            onChange={(e) =>
+                                                setPhrase(e.target.value)
+                                            }
+                                        />
+                                    </Grid>
+                                    <Grid item>
+                                        <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            onClick={generateRandom}
+                                        >
+                                            Random
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+
+                                <Grid item xs={12}>
                                     <TextField
                                         size="small"
                                         variant="outlined"
                                         fullWidth
-                                        autoComplete="off"
-                                        value={phrase}
-                                        label="Mnemonic Phrase"
+                                        value={path}
+                                        label="Path"
                                         onChange={(e) =>
-                                            setPhrase(e.target.value)
+                                            setPath(e.target.value)
                                         }
                                     />
                                 </Grid>
-                                <Grid item>
-                                    <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        onClick={generateRandom}
-                                    >
-                                        Random
-                                    </Button>
-                                </Grid>
                             </Grid>
-
-                            <Grid item xs={12}>
-                                <TextField
-                                    size="small"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={path}
-                                    label="Path"
-                                    onChange={(e) => setPath(e.target.value)}
-                                />
+                            <Grid item className={classes.centerItem}>
+                                <Button
+                                    type="submit"
+                                    size="large"
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={disabledAction || generated}
+                                >
+                                    Generate
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <ResultAddress {...{ address }} />
                             </Grid>
                         </Grid>
-                        <Grid item className={classes.centerItem}>
-                            <Button
-                                type="submit"
-                                size="large"
-                                variant="contained"
-                                color="primary"
-                                disabled={disabledAction || generated}
-                            >
-                                Generate
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <ResultAddress {...{ address }} />
-                        </Grid>
-                    </Grid>
-                </form>
-            </Paper>
-        </Box>
+                    </form>
+                </Paper>
+            </Box>
+        </>
     );
 }
 

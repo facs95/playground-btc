@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import * as bip39 from "bip39";
 import hdkey from "hdkey";
 import * as bitcoin from "bitcoinjs-lib";

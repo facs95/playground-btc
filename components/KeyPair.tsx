@@ -5,7 +5,6 @@ import {
     Tooltip,
 } from "@material-ui/core";
 import React, { SetStateAction, useCallback, useEffect, useState } from "react";
-import { KeyPairInterface } from "../pages/api/generateKeyPair";
 import CasinoIcon from "@material-ui/icons/Casino";
 
 interface Props {
@@ -46,7 +45,7 @@ export const KeyPair = ({ index, setPubKeys }: Props) => {
             InputProps={{
                 endAdornment: (
                     <InputAdornment position="end">
-                        <Tooltip title="Get random key" arrow>
+                        <Tooltip title="Generate random key" arrow>
                             <IconButton
                                 onClick={refreshRandomKeys}
                                 size="small"
