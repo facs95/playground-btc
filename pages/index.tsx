@@ -159,6 +159,7 @@ export default function Index() {
                                     </Grid>
                                     <Grid item>
                                         <Button
+                                            disabled={inputOption === "seed"}
                                             variant="outlined"
                                             color="primary"
                                             onClick={generateRandomMnemonic}
@@ -200,6 +201,9 @@ export default function Index() {
                                     </Grid>
                                     <Grid item>
                                         <Button
+                                            disabled={
+                                                inputOption === "mnemonic"
+                                            }
                                             variant="outlined"
                                             color="primary"
                                             onClick={generateRandomSeed}
