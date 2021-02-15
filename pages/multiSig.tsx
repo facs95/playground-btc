@@ -8,6 +8,8 @@ import {
     Paper,
     TextField,
     Typography,
+    useMediaQuery,
+    useTheme,
 } from "@material-ui/core";
 import { KeyPair } from "../components/KeyPair";
 import { ResultAddress } from "../components/ResultAddress";
@@ -16,6 +18,7 @@ import {
     MultiSigAddress,
 } from "./api/generateMultisigAddress";
 import { ErrorMessage } from "../components/ErrorMessage";
+import { PaperWrapper } from "../components/PaperWrapper";
 
 export default function Index() {
     const [address, setAddress] = useState("");
@@ -27,6 +30,9 @@ export default function Index() {
     const [pubKeys, setPubKeys] = useState<string[]>([]);
 
     const classes = useStyles();
+
+    const theme = useTheme();
+    const isSmall = useMediaQuery(() => theme.breakpoints.up("sm"));
 
     useEffect(() => {
         setGenerated(false);
@@ -62,7 +68,7 @@ export default function Index() {
     return (
         <>
             <Box className={classes.container}>
-                <Paper elevation={6} className={classes.paper}>
+                <PaperWrapper>
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -112,7 +118,11 @@ export default function Index() {
                                                 Number(e.target.value)
                                             )
                                         }
-                                        label="Required Signatures"
+                                        label={
+                                            isSmall
+                                                ? "Requried Signatures"
+                                                : "Signatures"
+                                        }
                                         size="small"
                                         fullWidth
                                         variant="outlined"
@@ -162,7 +172,7 @@ export default function Index() {
                             </Grid>
                         </Grid>
                     </form>
-                </Paper>
+                </PaperWrapper>
             </Box>
             <ErrorMessage
                 open={openErrorMessage}
@@ -180,12 +190,6 @@ const useStyles = makeStyles(() => ({
         justifyItems: "center",
         alignItems: "center",
         height: "calc(100vh - 200px)",
-    },
-    paper: {
-        margin: "auto",
-        minWidth: "70vw",
-        minHeight: 500,
-        padding: 40,
     },
     input: {
         flexGrow: 1,

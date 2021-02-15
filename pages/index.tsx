@@ -14,6 +14,7 @@ import {
 import { ResultAddress } from "../components/ResultAddress";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Seed } from "./api/generateSeed";
+import { PaperWrapper } from "../components/PaperWrapper";
 
 export default function Index() {
     const [phrase, setPhrase] = useState("");
@@ -108,7 +109,7 @@ export default function Index() {
     return (
         <>
             <Box className={classes.container}>
-                <Paper elevation={6} className={classes.paper}>
+                <PaperWrapper>
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -243,7 +244,7 @@ export default function Index() {
                             </Grid>
                         </Grid>
                     </form>
-                </Paper>
+                </PaperWrapper>
             </Box>
             <ErrorMessage
                 open={openErrorMessage}

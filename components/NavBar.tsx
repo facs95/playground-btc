@@ -99,7 +99,7 @@ export const NavBar = () => {
     );
 };
 
-const useStyles = makeStyles<Theme>(() => ({
+const useStyles = makeStyles<Theme>(theme => ({
     separator: {
         flexGrow: 1,
     },
@@ -107,7 +107,9 @@ const useStyles = makeStyles<Theme>(() => ({
         marginRight: 20,
     },
     logoContainer: {
-        width: 280,
+        [theme.breakpoints.up('sm')]: {
+            width: 280
+        }
     },
     logo: {
         width: 50,
