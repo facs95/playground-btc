@@ -1,7 +1,7 @@
 ## Bitcoin Playground
 
 This is a simple Bitcoin Playground Web App that allows you to do two different things:
-- Generate a Hierarchical Deterministic (HD) Segregated Witness (SegWit) bitcoin address from a given seed and path
+- Generate a Hierarchical Deterministic (HD) Segregated Witness (SegWit) bitcoin address from a given seed or mnemonic and path
 - Generate an n-out-of-m Multisignature (multi-sig) Pay-To-Script-Hash (P2SH) bitcoin address, where n, m and public keys can be specified
 
 It is built using [Next.js](https://nextjs.org/) and bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).

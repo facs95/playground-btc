@@ -14,7 +14,6 @@ import {
 } from "@material-ui/core";
 import { ResultAddress } from "../components/ResultAddress";
 import { ErrorMessage } from "../components/ErrorMessage";
-import { BorderOuterTwoTone } from "@material-ui/icons";
 import { Seed } from "./api/generateSeed";
 
 export default function Index() {
@@ -43,7 +42,7 @@ export default function Index() {
 
     useEffect(() => {
         setGenerated(false);
-    }, [path, phrase, inputOption]);
+    }, [path, phrase, inputOption, seed]);
 
     const onSubmit = async () => {
         try {
