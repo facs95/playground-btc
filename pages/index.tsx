@@ -8,7 +8,6 @@ import {
     makeStyles,
     Paper,
     Radio,
-    Switch,
     TextField,
     Typography,
 } from "@material-ui/core";
